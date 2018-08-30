@@ -1,5 +1,3 @@
-#!/usr/local/bin/Rscript
-
 library(ElPiGraph.R)
 library(dplyr)
 library(purrr)
