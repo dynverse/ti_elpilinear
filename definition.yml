@@ -1,6 +1,6 @@
 id: elpilinear
-docker_repository: dynverse/dynmethods:elpilinear
-container_url: https://github.com/dynverse/dynmethods/tree/master/containers/elpigraph
+docker_repository: dynverse/ti_elpilinear
+container_url: https://github.com/dynverse/ti_elpilinear
 name: ElPiGraph linear
 type: algorithm
 implementation_id: elpigraph
