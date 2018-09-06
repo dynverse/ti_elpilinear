@@ -1,5 +1,6 @@
 id: elpilinear
 docker_repository: dynverse/ti_elpilinear
+singularity_collection: 1544
 container_url: https://github.com/dynverse/ti_elpilinear
 name: ElPiGraph linear
 type: algorithm
