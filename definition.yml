@@ -72,7 +72,7 @@ output:
 wrapper_type: trajectory
 trajectory_types:
 - linear
-topology_inference: free
+topology_inference: fixed
 license: GPL-3
 authors:
 - given: Luca
