@@ -6,7 +6,7 @@ RUN Rscript -e 'devtools::install_cran("udunits2", configure.args =  c(udunits2 
 
 RUN R -e "devtools::install_github('Albluca/ElPiGraph.R')"
 
-LABEL version 0.1.3
+LABEL version 0.1.5
 
 ADD . /code
 ENTRYPOINT Rscript /code/run.R
