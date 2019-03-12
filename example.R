@@ -7,7 +7,7 @@ data <- dyntoy::generate_dataset(
   num_cells = 99,
   num_features = 101,
   model = "linear",
-  normalise = TRUE
+  normalise = FALSE
 )
 
 # add method specific args (if needed)
