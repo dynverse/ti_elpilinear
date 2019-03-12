@@ -1,3 +1,7 @@
+#!/usr/local/bin/Rscript
+
+task <- dyncli::main()
+
 library(ElPiGraph.R)
 library(dplyr)
 library(purrr)
@@ -7,41 +11,15 @@ library(readr)
 #   ____________________________________________________________________________
 #   Load data                                                               ####
 
-data <- read_rds("/ti/input/data.rds")
-params <- jsonlite::read_json("/ti/input/params.json")
+expression <- as.matrix(task$expression)
+params <- task$params
 
-#' @examples
-#' data <- dyntoy::generate_dataset(id = "test", num_cells = 300, num_features = 300, model = "binary_tree") %>% c(., .$prior_information)
-#' params <- yaml::read_yaml("containers/elpilinear/definition.yml")$parameters %>%
-#'   {.[names(.) != "forbidden"]} %>%
-#'   map(~ .$default)
-
-expression <- data$expression
-
-checkpoints <- list(method_afterpreproc = as.numeric(Sys.time()))
+checkpoints <- list()
+checkpoints$method_afterpreproc <- as.numeric(Sys.time())
 
 #   ____________________________________________________________________________
 #   Infer the trajectory                                                    ####
-# choose graph topology
-if (!is.null(data$trajectory_type)) {
-  principal_graph_function <- switch(
-    data$trajectory_type,
-    linear = computeElasticPrincipalCurve,
-    directed_linear = computeElasticPrincipalCurve,
-    undirected_linear = computeElasticPrincipalCurve,
-    cycle = computeElasticPrincipalCircle,
-    directed_cycle = computeElasticPrincipalCircle,
-    undirected_cycle = computeElasticPrincipalCircle,
-    computeElasticPrincipalTree
-  )
-} else {
-  principal_graph_function <- switch(
-    params$topology,
-    linear = computeElasticPrincipalCurve,
-    cycle = computeElasticPrincipalCircle,
-    computeElasticPrincipalTree
-  )
-}
+principal_graph_function <- computeElasticPrincipalCurve
 
 # infer the principal graph, from https://github.com/Albluca/ElPiGraph.R/blob/master/guides/base.md
 principal_graph <- principal_graph_function(
@@ -79,7 +57,7 @@ checkpoints$method_aftermethod <- as.numeric(Sys.time())
 #   ____________________________________________________________________________
 #   Process & save the model                                               ####
 milestone_network <- ProjStruct$Edges %>%
-  as_data_frame() %>%
+  as_tibble() %>%
   rename(from = row, to = col) %>%
   mutate(
     from = paste0("M", from),
@@ -100,4 +78,10 @@ output <- lst(
   timings = checkpoints
 )
 
-write_rds(output, "/ti/output/output.rds")
+dynwrap::wrap_data(cell_ids = rownames(expression)) %>%
+  dynwrap::add_trajectory(
+    milestone_network = milestone_network,
+    progressions = progressions
+  ) %>%
+  dynwrap::add_timings(timings = checkpoints) %>%
+  dyncli::write_output(task$output)
