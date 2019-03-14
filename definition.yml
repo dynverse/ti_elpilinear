@@ -22,11 +22,10 @@ container:
   docker: dynverse/ti_elpilinear
 
 wrapper:
-  type:
+  type: trajectory
   topology_inference: fixed
   trajectory_types:
   - linear
-  example:
   input_required:
   - expression
 
