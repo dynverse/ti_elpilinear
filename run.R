@@ -12,7 +12,7 @@ library(readr)
 #   Load data                                                               ####
 
 expression <- as.matrix(task$expression)
-params <- task$params
+parameters <- task$parameters
 
 checkpoints <- list()
 checkpoints$method_afterpreproc <- as.numeric(Sys.time())
@@ -24,14 +24,14 @@ principal_graph_function <- computeElasticPrincipalCurve
 # infer the principal graph, from https://github.com/Albluca/ElPiGraph.R/blob/master/guides/base.md
 principal_graph <- principal_graph_function(
   X = expression,
-  NumNodes = params$NumNodes,
-  NumEdges = params$NumEdges,
-  InitNodes = params$InitNodes,
-  MaxNumberOfIterations = params$MaxNumberOfIterations,
-  eps = params$eps,
-  CenterData = params$CenterData,
-  Lambda = params$Lambda,
-  Mu = params$Mu,
+  NumNodes = parameters$NumNodes,
+  NumEdges = parameters$NumEdges,
+  InitNodes = parameters$InitNodes,
+  MaxNumberOfIterations = parameters$MaxNumberOfIterations,
+  eps = parameters$eps,
+  CenterData = parameters$CenterData,
+  Lambda = parameters$Lambda,
+  Mu = parameters$Mu,
   drawAccuracyComplexity = FALSE,
   drawEnergy = FALSE,
   drawPCAView = FALSE,
