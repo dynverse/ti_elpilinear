@@ -15,7 +15,7 @@ data$parameters <- list(
   NumNodes = 20L,
   MaxNumberOfIterations = 3
 )
-data$seed <- 1
+data$seed <- 1L
 
 # write example dataset to file
 file <- commandArgs(trailingOnly = TRUE)[[1]]
